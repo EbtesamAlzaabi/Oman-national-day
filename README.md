@@ -1,4 +1,4 @@
-# 🇴🇲 Oman National Day Celebration
+#  Oman National Day Celebration
 
 ### Celebrating Oman with Love & Code ❤️💚🤍
 
