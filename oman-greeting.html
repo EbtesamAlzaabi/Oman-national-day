@@ -1,0 +1,527 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>العيد الوطني العُماني 🇴🇲</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 20px 0;
+      background: linear-gradient(
+        135deg, #071b13, #123c29, #071b13
+      );
+      color: white;
+      font-family: Tahoma, Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow-x: hidden;
+      text-align: center;
+    }
+
+    canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .card {
+      position: relative;
+      z-index: 2;
+      width: 90%;
+      max-width: 650px;
+      padding: 45px 25px;
+      border: 1px solid #d6b76c;
+      border-radius: 25px;
+      background: rgba(0, 0, 0, 0.78);
+      box-shadow: 0 0 45px rgba(212, 175, 55, 0.15);
+      animation: appear 1.5s ease;
+    }
+
+    .flag {
+      font-size: 75px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .subtitle {
+      color: #e8c978;
+      letter-spacing: 3px;
+      font-size: 15px;
+      margin-top: 10px;
+    }
+
+    /* National title */
+
+    .national-title {
+      font-size: clamp(30px, 7vw, 55px);
+      margin: 20px 0;
+      font-weight: bold;
+      line-height: 1.5;
+    }
+
+    .title-white {
+      color: #ffffff;
+      text-shadow: 0 0 15px rgba(255,255,255,0.45);
+    }
+
+    .title-green {
+      color: #00a650;
+      text-shadow: 0 0 15px rgba(0,166,80,0.55);
+    }
+
+    .title-red {
+      color: #ed2939;
+      text-shadow: 0 0 15px rgba(237,41,57,0.55);
+    }
+
+    .message {
+      font-size: 20px;
+      line-height: 2;
+      color: #f5e9cc;
+    }
+
+    /* Animated typing box */
+
+    .typing-box {
+      direction: rtl;
+      margin: 30px auto 25px;
+      padding: 35px 20px;
+      max-width: 460px;
+      min-height: 190px;
+      background: #07130e;
+      border-radius: 12px;
+      border-right: 4px solid #d4af37;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 0 25px rgba(212,175,55,0.08);
+    }
+
+    .typing-label {
+      font-family: Consolas, monospace;
+      font-size: 12px;
+      letter-spacing: 2px;
+      color: #d6b76c;
+      margin-bottom: 20px;
+    }
+
+    .typing-line {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 75px;
+      width: 100%;
+      direction: rtl;
+    }
+
+    #typing-text {
+      font-size: clamp(19px, 4vw, 25px);
+      font-weight: bold;
+      line-height: 2;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      unicode-bidi: plaintext;
+    }
+
+    .typing-white {
+      color: #ffffff;
+      text-shadow: 0 0 12px rgba(255,255,255,0.4);
+    }
+
+    .typing-green {
+      color: #00a650;
+      text-shadow: 0 0 12px rgba(0,166,80,0.5);
+    }
+
+    .typing-red {
+      color: #ed2939;
+      text-shadow: 0 0 12px rgba(237,41,57,0.5);
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 3px;
+      height: 26px;
+      background: #e53935;
+      margin-right: 5px;
+      animation: blink 0.7s infinite;
+      vertical-align: middle;
+    }
+
+    .typing-footer {
+      margin-top: 18px;
+      font-family: Consolas, monospace;
+      font-size: 12px;
+      color: #7de4a0;
+      direction: ltr;
+    }
+
+    button {
+      padding: 15px 32px;
+      border: none;
+      border-radius: 30px;
+      background: linear-gradient(
+        90deg, #b71c1c, #e53935
+      );
+      color: white;
+      font-size: 17px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 25px #e53935;
+    }
+
+    #surprise {
+      display: none;
+      margin-top: 25px;
+      color: #f5d77d;
+      font-size: 22px;
+      line-height: 1.9;
+      animation: appear 1s ease;
+    }
+
+    .footer {
+      margin-top: 25px;
+      font-size: 14px;
+      color: #c9c9c9;
+    }
+
+    @keyframes float {
+      50% {
+        transform: translateY(-12px);
+      }
+    }
+
+    @keyframes appear {
+      from {
+        opacity: 0;
+        transform: translateY(25px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes blink {
+      0%, 50% {
+        opacity: 1;
+      }
+      51%, 100% {
+        opacity: 0;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .card {
+        padding: 30px 15px;
+      }
+
+      .message {
+        font-size: 16px;
+      }
+
+      .typing-box {
+        padding: 30px 12px;
+      }
+
+      #surprise {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <canvas id="fireworks"></canvas>
+
+  <div class="card">
+
+    <div class="flag">🇴🇲</div>
+
+    <p class="subtitle">
+      OMAN NATIONAL DAY
+    </p>
+
+    <h1 class="national-title">
+      <span class="title-white">دام عزك</span>
+      <span class="title-green">يا</span>
+      <span class="title-red">عُمان</span>
+    </h1>
+
+    <p class="message">
+      في يومك الوطني، نكتب لكِ أجمل الأكواد،
+      <br>
+      ونبرمج في قلوبنا حبكِ إلى الأبد ❤️
+    </p>
+
+    <!-- New animated programming phrase -->
+
+    <div class="typing-box">
+
+      <div class="typing-label">
+        &lt; OMAN WITH LOVE /&gt;
+      </div>
+
+      <div class="typing-line">
+        <div>
+          <span id="typing-text"></span><span class="cursor"></span>
+        </div>
+      </div>
+
+     
+
+    </div>
+
+    <button onclick="celebrate()">
+      🎉 اضغط للاحتفال بعُمان
+    </button>
+
+    <div id="surprise">
+      🇴🇲 ❤️ 💚 🤍
+      <br>
+      كل عام وسلطنة عُمان تنعم بالأمن والأمان
+      <br>
+      والعز والمجد والازدهار ✨
+    </div>
+
+   <div class="footer">
+  Designed & Coded with ❤️ by
+  <span class="developer-name">Ebtesam Al Zaabi</span>
+</div>
+
+  </div>
+
+  <script>
+    // ===================================
+    // Animated Arabic typing effect
+    // ===================================
+
+    const typingElement =
+      document.getElementById("typing-text");
+
+    const segments = [
+      {
+        text: "كل الأكواد لها نهاية، ",
+        className: "typing-white"
+      },
+      {
+        text: "إلا حبُّ عُمان ",
+        className: "typing-red"
+      },
+      {
+        text: "فهو حلقة لا تنتهي ♾️",
+        className: "typing-green"
+      }
+    ];
+
+    const typingMessage =
+      segments.map(s => s.text).join("");
+
+    const characters = Array.from(typingMessage);
+
+    let typingIndex = 0;
+    let isDeleting = false;
+
+    function renderColoredText() {
+
+      typingElement.textContent = "";
+
+      let remaining = typingIndex;
+
+      segments.forEach(segment => {
+
+        if (remaining <= 0) return;
+
+        const segmentCharacters =
+          Array.from(segment.text);
+
+        const count = Math.min(
+          remaining,
+          segmentCharacters.length
+        );
+
+        const span = document.createElement("span");
+
+        span.className = segment.className;
+
+        span.textContent = segmentCharacters
+          .slice(0, count)
+          .join("");
+
+        typingElement.appendChild(span);
+
+        remaining -= count;
+      });
+    }
+
+    function typeMessage() {
+
+      if (!isDeleting) {
+
+        typingIndex++;
+        renderColoredText();
+
+        if (typingIndex === characters.length) {
+          isDeleting = true;
+          setTimeout(typeMessage, 3000);
+          return;
+        }
+
+        setTimeout(typeMessage, 110);
+
+      } else {
+
+        typingIndex--;
+        renderColoredText();
+
+        if (typingIndex === 0) {
+          isDeleting = false;
+          setTimeout(typeMessage, 800);
+          return;
+        }
+
+        setTimeout(typeMessage, 55);
+      }
+    }
+
+    setTimeout(typeMessage, 1000);
+
+
+    // ===================================
+    // Fireworks animation
+    // ===================================
+
+    const canvas =
+      document.getElementById("fireworks");
+
+    const ctx = canvas.getContext("2d");
+
+    let particles = [];
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    window.addEventListener("resize", resize);
+    resize();
+
+    function firework(x, y) {
+
+      const colors = [
+        "#ffffff",
+        "#ed2939",
+        "#00a650",
+        "#ffd700"
+      ];
+
+      for (let i = 0; i < 90; i++) {
+
+        const angle =
+          Math.random() * Math.PI * 2;
+
+        const speed =
+          Math.random() * 5 + 1;
+
+        particles.push({
+          x: x,
+          y: y,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          life: 100,
+          color: colors[
+            Math.floor(
+              Math.random() * colors.length
+            )
+          ]
+        });
+      }
+    }
+
+    function animate() {
+
+      ctx.clearRect(
+        0, 0, canvas.width, canvas.height
+      );
+
+      particles.forEach((p, index) => {
+
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.025;
+        p.life--;
+
+        ctx.globalAlpha =
+          Math.max(p.life / 100, 0);
+
+        ctx.fillStyle = p.color;
+
+        ctx.beginPath();
+        ctx.arc(
+          p.x, p.y, 2.5, 0, Math.PI * 2
+        );
+        ctx.fill();
+
+        if (p.life <= 0) {
+          particles.splice(index, 1);
+        }
+      });
+
+      ctx.globalAlpha = 1;
+      requestAnimationFrame(animate);
+    }
+
+    // ===================================
+    // Celebration button
+    // ===================================
+
+    function celebrate() {
+
+      document.getElementById(
+        "surprise"
+      ).style.display = "block";
+
+      for (let i = 0; i < 7; i++) {
+
+        setTimeout(() => {
+
+          firework(
+            Math.random() * canvas.width,
+            Math.random() * canvas.height * 0.7
+          );
+
+        }, i * 300);
+      }
+    }
+
+    // Automatic fireworks
+
+    setInterval(() => {
+
+      firework(
+        Math.random() * canvas.width,
+        Math.random() * canvas.height * 0.6
+      );
+
+    }, 1800);
+
+    animate();
+  </script>
+
+</body>
+</html>
